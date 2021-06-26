@@ -4,10 +4,8 @@ import com.example.demojsp.interfaces.BookService;
 import com.example.demojsp.model.Book;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -34,7 +32,8 @@ public class BookController {
     }
 
     @PostMapping("/addBook")
-    public RedirectView addBook(@ModelAttribute("book") Book book, RedirectAttributes redirectAttributes) {
+    public RedirectView addBook(@RequestParam MultipartFile file, @ModelAttribute("book") Book book, RedirectAttributes redirectAttributes) {
+        System.out.println("file.getName() = " + file.getOriginalFilename());
         final RedirectView redirectView = new RedirectView("/book/addBook", true);
         Book savedBook = bookService.addBook(book);
         redirectAttributes.addFlashAttribute("savedBook", savedBook);
